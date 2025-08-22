@@ -1,6 +1,7 @@
 from security.jwt import crear_acceso_token, deshacer_token
 from security.hashear import doing_hash
 print("     wazaaaa")
+print("funciona por favorr")
 import uuid
 nombre_usuario = "alexis"
 apellido_usuario = "cepeda"
