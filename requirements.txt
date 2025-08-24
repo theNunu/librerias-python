@@ -1,2 +1,4 @@
 PyJWT
 bcrypt
+pdfplumber
+PDFplumber
