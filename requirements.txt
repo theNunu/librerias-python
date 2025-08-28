@@ -2,3 +2,5 @@ PyJWT
 bcrypt
 pdfplumber
 PDFplumber
+langchain_community
+pymupdf
