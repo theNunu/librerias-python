@@ -14,7 +14,7 @@ for indice, caracter in enumerate(texto, 1):
     
 print("\n ------   ----- Ejemplo 5: Combinar con una lista de tuplas")
 
-parejas = [("Ana", 25), ("Luis", 30), ("María", 28)]
+parejas = [("Ana", 25), ("Luis", 30), ("María", 28)] #lista = [], tupla = ()
 
 for indice, (nombre, edad) in enumerate(parejas, start=1):
     print(f"{indice}. {nombre} tiene {edad} años")
