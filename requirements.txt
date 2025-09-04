@@ -4,3 +4,5 @@ pdfplumber
 PDFplumber
 langchain_community
 pymupdf
+fastapi[standard]
+pymongo
