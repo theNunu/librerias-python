@@ -5,6 +5,7 @@ print("2")
 from learning_fastapi.mongo_db.conexion import connect_to_mongodb
 print("3")
 from learning_fastapi.mongo_db.champions_models import Champion
+from typing import List
 app = FastAPI()
 
 
@@ -19,18 +20,18 @@ def read_root():
 # Serializador para convertir documentos de MongoDB a JSON
 def champion_serializer(champion) -> dict:
     return {
-        "id champion": str(champion["_id"]),
+        "message": "campeon obtenido: ",
+        "id champion": str(champion["_id"]), #Convierte el ObjectId en una cadena (str(champion["_id"])).
         "name champion": champion["name"],
         "carril champion": champion["carril"]
     }
 
-# @app.get("/items/{item_id}")
-# def read_item(item_id: int, q: Union[str, None] = None):
-#     return {"item_id": item_id, "q": q}
 
-@app.post("/crear_campeones")
+@app.post("/crear_campeon")
 def crear_campeon(data: Champion):
     db, campeones = _get_collections()
+    
+    champions_mongo = campeones
 
     campeon_datos = {
         "name": data.name,
@@ -39,7 +40,7 @@ def crear_campeon(data: Champion):
     
     print(f"campeon datos {campeon_datos}")
     
-    champion = campeones.insert_one(campeon_datos)
+    champion = champions_mongo.insert_one(campeon_datos)
     
     print(f"champion: {champion}")
     print("\nel campeon se creo")
@@ -54,15 +55,32 @@ def obtener_todos_los_campeones():
     db, campeones = _get_collections()
     # Obtener todos los documentos de la colección
     champions = [champion_serializer(champ) for champ in campeones.find()]
+    # champions = []
+    # for champ in campeones.find():
+    #     champions.append(champion_serializer(champ))
+    
+    
     return champions
-    
-# @app.get("/campeon_id/{id}")
-# def obtener_todos_los_campeones(data: Champion):
-    
-#     if not idCampeon == data.inserted_id:
-        
-#     db, campeones = connect_to_mongodb()
-#     return {
-#         "message": "obtenido campeon por id"
-#     }
 
+@app.get("/mostrar_junglas")
+def get_only_jungles():
+    db, campeones = _get_collections()
+    champions = [champion_serializer(champ) for champ in campeones.find( {"carril": "jungla"} )] 
+    print(f"\nsolo junglas: {champions}")
+    return champions
+
+# @app.get("obtener_by_id")
+# def get_only_by_id(id_campeon):
+#     db, campeones = _get_collections()
+#     champions = [champion_serializer(champ) for champ in campeones.find_one({"id": id_campeon} )] 
+#     print(f"\nsolo  id: {champions}")
+#     return champions
+
+
+@app.get("/obtener_campeones3", response_model=List[Champion])
+def obtener_todos_los_campeones():
+    db, campeones = _get_collections()
+    champions = [Champion(id=str(champ["_id"]), name=champ["name"], carril=champ["carril"]) for champ in campeones.find()]
+    print(f"\ninfo de Champions: {champions} \n")
+    print(f"contenido de Champion: {Champion}")
+    return champions
